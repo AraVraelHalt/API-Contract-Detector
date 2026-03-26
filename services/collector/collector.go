@@ -14,7 +14,9 @@ func CaptureRequest(next http.Handler) http.Handler {
 		// TODO: handle streaming and errors properly
 		buf := make([]byte, r.ContentLength)
 		r.Body.Read(buf)
-		inference.InferSchema(buf)
+		schema := inference.InferSchema(buf)
+
+		fmt.Println("Schema:", schema)
 
 		next.ServeHTTP(w, r)
 	})
