@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS schemas (
+    id SERIAL PRIMARY KEY,
+    endpoint TEXT,
+    schema JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
