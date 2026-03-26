@@ -37,3 +37,22 @@ func SaveSchema(endpoint string, schema map[string]string) {
       log.Println("Error saving schema:", err)
   }
 }
+
+func GetLastSchema(endpoint string) (map[string]string, error) {
+  row := DB.QueryRow(
+      "SELECT schema FROM schemas WHERE endpoint=$1 ORDER BY created_at DESC LIMIT 1",
+      endpoint,
+  )
+
+  var schemaJSON []byte
+  err := row.Scan(&schemaJSON)
+  
+	if err != nil {
+      return nil, err
+  }
+
+  var schema map[string]string
+  json.Unmarshal(schemaJSON, &schema)
+
+  return schema, nil
+}
