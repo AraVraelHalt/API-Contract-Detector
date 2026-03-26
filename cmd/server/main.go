@@ -6,9 +6,12 @@ import (
 	"net/http"
 
 	"github.com/AraVraelHalt/API-Contract-Detector/services/collector"
+	"github.com/AraVraelHalt/API-Contract-Detector/services/storage"
 )
 
 func main() {
+	storage.InitDB()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "API Contract Break Detector backend running")

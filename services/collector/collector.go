@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/AraVraelHalt/API-Contract-Detector/services/inference"
+	"github.com/AraVraelHalt/API-Contract-Detector/services/storage"
 )
 
 func CaptureRequest(next http.Handler) http.Handler {
@@ -15,6 +16,7 @@ func CaptureRequest(next http.Handler) http.Handler {
 		buf := make([]byte, r.ContentLength)
 		r.Body.Read(buf)
 		schema := inference.InferSchema(buf)
+		storage.SaveSchema(r.URL.Path, schema)
 
 		fmt.Println("Schema:", schema)
 
