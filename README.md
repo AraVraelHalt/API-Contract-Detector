@@ -2,6 +2,8 @@
 
 Detect breaking API changes using real production traffic — not just static schemas.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 ## 🚨 Problem
 
 Microservices often break each other due to undocumented or implicit API contracts.
@@ -21,7 +23,7 @@ This tool observes real API traffic, infers schemas, and detects breaking change
 * Automatic JSON schema inference
 * Schema version tracking per endpoint
 * Breaking change detection
-* CLI + dashboard visualization
+* Dashboard visualization
 * CI/CD integration (GitHub Actions)
 
 ## 🏗️ How It Works
@@ -30,16 +32,6 @@ This tool observes real API traffic, infers schemas, and detects breaking change
 2. Infer JSON schema from requests/responses
 3. Store schema versions
 4. Diff schemas to detect breaking changes
-
-## 🧪 Example
-
-```bash
-$ detect-contract-breaks
-
-BREAKING CHANGE:
-- user.id changed type: number → string
-- user.email field removed
-```
 
 ## 🚀 Getting Started
 
@@ -70,6 +62,3 @@ This project simulates real-world distributed system challenges:
 * Contract enforcement
 * Observability
 
-## 📄 License
-
-MIT
