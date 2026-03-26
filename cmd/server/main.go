@@ -4,13 +4,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/AraVraelHalt/API-Contract-Detector/services/collector"
 )
 
 func main() {
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "API Contract Break Detector backend running")
 	})
 
+	handler := collector.CaptureRequest(mux)
+
 	fmt.Println("Server running on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
