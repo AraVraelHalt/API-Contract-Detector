@@ -5,7 +5,8 @@ import (
 	"log"
 	"net/http"
 	"encoding/json"
-
+	
+	"github.com/rs/cors"
 	"github.com/AraVraelHalt/API-Contract-Detector/services/collector"
 	"github.com/AraVraelHalt/API-Contract-Detector/services/storage"
 )
@@ -51,7 +52,7 @@ func main() {
 		json.NewEncoder(w).Encode(results)
 	})
 
-	handler := collector.CaptureRequest(mux)
+	handler := cors.Default().Handler(collector.CaptureRequest(mux))
 
 	fmt.Println("Server running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", handler))
