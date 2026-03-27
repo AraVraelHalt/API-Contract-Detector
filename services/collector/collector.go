@@ -13,7 +13,6 @@ func CaptureRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Captured request: %s %s\n", r.Method, r.URL.Path)
 
-		// TODO: handle streaming and errors properly
 		buf := make([]byte, r.ContentLength)
 		r.Body.Read(buf)
 
@@ -21,12 +20,10 @@ func CaptureRequest(next http.Handler) http.Handler {
 		newSchema := inference.InferSchema(buf)
 
 		if err == nil {
-			diffengine.DetectBreakingChanges(oldSchema, newSchema)
+			diffengine.DetectBreakingChanges(r.URL.Path, oldSchema, newSchema)
 		}
 
 		storage.SaveSchema(r.URL.Path, newSchema)
-
-		fmt.Println("Schema:", newSchema)
 
 		next.ServeHTTP(w, r)
 	})

@@ -38,11 +38,16 @@ func SaveSchema(endpoint string, schema map[string]string) {
   }
 }
 
+func SaveChange(endpoint, change string) {
+	_, err := DB.Exec("INSERT INTO changes (endpoint, change) VALUES ($1, $2)", endpoint, change,)
+
+	if err != nil {
+		log.Println("Error saving change: ", err)
+	}
+}
+
 func GetLastSchema(endpoint string) (map[string]string, error) {
-  row := DB.QueryRow(
-      "SELECT schema FROM schemas WHERE endpoint=$1 ORDER BY created_at DESC LIMIT 1",
-      endpoint,
-  )
+  row := DB.QueryRow("SELECT schema FROM schemas WHERE endpoint=$1 ORDER BY created_at DESC LIMIT 1", endpoint)
 
   var schemaJSON []byte
   err := row.Scan(&schemaJSON)
