@@ -2,6 +2,8 @@ package collector
 
 import (
 	"fmt"
+	"io"
+	"bytes"
 	"net/http"
 
 	"github.com/AraVraelHalt/API-Contract-Detector/services/inference"
@@ -11,10 +13,11 @@ import (
 
 func CaptureRequest(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
 		fmt.Printf("Captured request: %s %s\n", r.Method, r.URL.Path)
 
-		buf := make([]byte, r.ContentLength)
-		r.Body.Read(buf)
+		buf, _ := io.ReadAll(r.Body)
+		r.Body = io.NopCloser(bytes.NewBuffer(buf)) // reset for next handler
 
 		oldSchema, err := storage.GetLastSchema(r.URL.Path)
 		newSchema := inference.InferSchema(buf)
